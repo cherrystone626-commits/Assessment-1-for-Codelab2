@@ -1,0 +1,37 @@
+import tkinter as tk
+import random
+
+root = tk.Tk()
+root.geometry('450x350')
+root.config(bg = 'beige')
+
+# Variables for the code that is relevant
+level = 1
+question = 0
+attempt = 1
+score = 0
+Canswer = 0
+
+# This is to remove everything from the window
+def clear():
+  for widget in window.winfo_children():
+   widget.destroy()
+
+# This is the display menu of the app, with button for difficulties
+def display_menu():
+  clear()
+  tk.Label(root, text = 'Math test', font = ('courier', 20, 'bold'), bg = 'beige').pack(pady = 20)
+  tk.Label(root, text = 'Choose your Difficulty', font = ('helvetica', 15, 'bold'), bg = 'beige').pack(pady = 20)
+  tk.Button(root, text = 'Easy', font = ('tahoma', 10), width = 10, command = easy, fg = 'green').pack(pady = 10)
+  tk.Button(root, text = 'Normal', font = ('tahoma', 10), width = 10, command = normal, fg = 'orange').pack(pady = 10)
+  tk.Button(root, text = 'Hard', font = ('tahoma', 10), width = 10, command = hard, fg = 'red').pack(pady = 10)
+
+def easy():
+ start_level(1)
+def normal():
+ start_level(2)
+def hard():
+ start_level(3)
+
+def start_level():
+  
