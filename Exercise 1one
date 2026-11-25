@@ -2,8 +2,9 @@ import tkinter as tk
 import random
 
 root = tk.Tk()
-root.geometry('450x350')
+root.geometry('350x325')
 root.config(bg = 'beige')
+root.title('Math Test (+, -, and * only!)')
 
 # Variables for the code that is relevant
 level = 1
@@ -12,9 +13,9 @@ attempt = 1
 score = 0
 Canswer = 0
 
-# This is to remove everything from the window
+# This is to return the list of all widgets that are children of this
 def clear():
-  for widget in window.winfo_children():
+  for widget in root.winfo_children():
    widget.destroy()
 
 # This is the display menu of the app, with button for difficulties
@@ -25,7 +26,17 @@ def display_menu():
   tk.Button(root, text = 'Easy', font = ('tahoma', 10), width = 10, command = easy, fg = 'green').pack(pady = 10)
   tk.Button(root, text = 'Normal', font = ('tahoma', 10), width = 10, command = normal, fg = 'orange').pack(pady = 10)
   tk.Button(root, text = 'Hard', font = ('tahoma', 10), width = 10, command = hard, fg = 'red').pack(pady = 10)
+# This is a display once you want to try again
+def display_menu2():
+  clear()
+  tk.Label(root, text = 'Math test', font = ('courier', 20, 'bold'), bg = 'beige').pack(pady = 20)
+  tk.Label(root, text = 'Choose your Difficulty', font = ('helvetica', 15, 'bold'), bg = 'beige').pack(pady = 20)
+  tk.Button(root, text = 'Easy', font = ('tahoma', 10), width = 10, command = easy, fg = 'green').pack(pady = 10)
+  tk.Button(root, text = 'Normal', font = ('tahoma', 10), width = 10, command = normal, fg = 'orange').pack(pady = 10)
+  tk.Button(root, text = 'Hard', font = ('tahoma', 10), width = 10, command = hard, fg = 'red').pack(pady = 10)
+  tk.Label(root, text = 'Try something else than before?', font = ('courier', 10), bg = 'beige').pack(pady = 10)
 
+# All difficulties split in 3 functions
 def easy():
  start_level(1)
 def normal():
@@ -33,5 +44,117 @@ def normal():
 def hard():
  start_level(3)
 
-def start_level():
+# This function connects the 3 difficulty functions, that has a set range of numbers depending the difficulty chosen
+def randomInt():
+  if level == 1:
+    return random.randint(1, 9) # This is where the import random is useful towards the code
+  elif level == 2:
+    return random.randint(10, 99)
+  else:
+    return random.randint(100, 999)
+
+# This function starts the level, with global to check for variables in or outside any functions
+def start_level(Clevel):
+  global level, question, score
+  level = Clevel
+  question = 0
+  score = 0
+  next_question() # This is called for the function below
+
+# This is for every next question. With global to call every variable that is needed for this to work
+def next_question():
+  global level, question, attempt, score, Canswer, entry, mlabel, sbutton
+
+  question = question + 1
+  attempt = 1
+
+# Two variables for the random numbers, alongside with the plus, minus, and multiplication
+  a = randomInt() 
+  b = randomInt()
+  sign = random.choice(['+', '-', 'x'])
+
+  if sign == '+':
+   Canswer = a + b
+  elif sign == '-':
+   Canswer = a - b
+  else:
+   Canswer = a * b
+
+# Labels to tell what is the current progress of the game. With an entry for user input and a button to submit the answer
+  clear()
+  tk.Label(root, text = f'Question {question} out of 10', bg = 'beige', font = ('courier', 15, 'bold')).pack(pady = 35)
+  tk.Label(root, text = f'Score {score} out of 100', bg = 'beige', font = ('helvetica', 15)).pack()
+  tk.Label(root, text = f'{a} {sign} {b}', bg = 'beige', font = ('tahoma', 19, 'bold')).pack(pady = 15)
+
+  entry = tk.Entry(root, font = ('arial', 18), width = 10)
+  entry.pack()
+
+  sbutton = tk.Button(root, text = 'Submit', font = ('courier', 13), command = check_answer)
+  sbutton.pack(pady = 15)
+
+  mlabel = tk.Label(root, text = '', bg = 'beige',)
+  mlabel.pack()
+
+# Once it exceeds, it would display the results 
+  if question == 11:
+   display_results()
+   return
+
+# A function for checking answers if its right or not. With the sbutton variable connected to it
+def check_answer():
+  global score, attempt
+
+  try: # Try error to check if the user type something different
+    the_answer = int(entry.get())
+  except ValueError:
+    mlabel.config(text = 'Please type a number', fg = 'orange', font = ('courier', 15))
+    return
+
+  if the_answer == Canswer: # Nested if-else to see if answer is correct and if the attempt is good
+    if attempt == 1:
+      score = score + 10
+    else:
+      score = score + 5
+
+    mlabel.config(text = 'The answer is correct!', fg = 'green', font = ('courier', 15))
+    sbutton.config(state = 'disabled')
+    root.after(500, next_question)
+
+  else:
+      
+    if attempt == 1: # Continues to here for the nested if-else if answer is incorrect with attempts used to 2 maximum
+      attempt = 2
+      entry.delete(0, tk.END)
+      mlabel.config(text = 'Wrong. Try again!', fg = 'orange', font = ('courier', 15))
+
+    else: # If its wrong, this will be the label for it
+      mlabel.config(text = f'Wrong. The correct answer is {Canswer}', fg = 'red', font = ('courier', 12))
+      sbutton.config(state = 'disabled')
+      root.after(800, next_question)
+
+# This function is to display the results of your performance
+def display_results():
+  clear() # This is to return the list of all widgets that are children from the clear()
   
+  if score >= 90:
+   grade = 'A+'
+  elif score >= 80:
+   grade = 'A'
+  elif score >= 70:
+   grade = 'B'
+  elif score >= 60:
+   grade = 'C'
+  elif score >= 50:
+   grade = 'D'
+  else:
+   grade = 'F \n Try harder!'
+
+# Labels at the end of the test. with the results and button whether you want to continue or not
+  tk.Label(root, text = 'Finished!', font = ('helvetica', 20, 'bold'), bg = 'beige', fg = 'green').pack(pady = 20)
+  tk.Label(root, text = f'Score: {score}/100', font = ('helvetica', 15, 'bold'), bg = 'beige').pack()
+  tk.Label(root, text = f'Grade: {grade}', font = ('helvetica', 15, 'bold'), bg = 'beige').pack(pady = 5)
+  tk.Button(root, text = 'Try again?', font = ('courier', 15), fg = 'blue', command = display_menu2).pack(pady = 15) # Button for try again
+  tk.Button(root, text = 'Quit', font = ('courier', 15), fg = 'purple', command = root.destroy).pack(pady = 15) # Button for quit
+
+display_menu() # To display to function
+root.mainloop() # And a mainloop to run the code entirely
