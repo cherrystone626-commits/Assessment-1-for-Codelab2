@@ -1,0 +1,61 @@
+import tkinter as tk
+
+list = tk.Tk()
+list.title('Records')
+list.geometry('450x370')
+
+Records = ['1345, John Curry, 8, 15, 7, 45',
+           '2345, Sam Sturtivant, 14, 15, 14, 77',
+           '9876, Lee Scott, 17, 11, 16, 99',
+           '3724, Matt Thompson, 19, 11, 15, 81',
+           '1212, Ron Herema, 14, 17, 18, 66',
+           '8439, Jake Hobbs, 10, 11, 18, 66',
+           '2344, Jo Hyde, 6, 15, 10, 15',
+           '9384, Gareth Southgate, 5, 6, 8, 33',
+           '8327, Alan Shearer, 20, 20, 20, 100',
+           '2983, Les Ferdinand, 15, 17, 18, 92']
+
+Students = []
+
+for line in Records:
+  line = line.strip(',')
+  parts = line.split(',')
+
+  Student_number = parts[0]
+  Student_name = parts[1]
+
+  Mark1 = parts[2]
+  Mark2 = [3]
+  Mark3 = [4]
+  Exam_mark = [5]
+
+  Mark_total = Mark1 + Mark2 + Mark3
+  Total_mark = Mark_total + Exam_mark
+  Percent = Total_mark / 100
+  
+
+  if Percent >= 70:
+   print = 'A'
+  elif Percent >= 60:
+   print = 'B'
+  elif Percent >= 50:
+   print = 'C'
+  elfi Percent >= 40:
+   print = 'D'
+  else:
+   print = 'F'
+
+  Student {
+   'Name': Student_name,
+   'Number': Student_number,
+   'Course': Mark_total,
+   'Exam': Exam_mark,
+   'Total Grade': Percent
+  }
+
+  Students.append(Student)
+
+def show_List
+  text = pause
+
+list.mainloop()
