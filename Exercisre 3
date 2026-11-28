@@ -4,6 +4,27 @@ list = tk.Tk()
 list.title('Records')
 list.geometry('450x370')
 
+button1 = tk.Button(list, text = 'View all student records', command = view_all, font = ('helvetica', 10))
+button1.pack(pady =5)
+
+Elabel = tk.Label(list, text = 'Enter a student's name:', font = ('helvetica', 5, 'bold'))
+Elabel.pack()
+
+Eentry = tk.Entry(list, width = 12)
+Eentry.pack()
+
+button2  = tk.Button(list, text = 'View student's individually', command = view_one, font = ('helevetica', 10))
+button2.pack(pady = 5)
+
+button3 = tk.Button(list, text = 'Show Highest Score', command = view_high, font = ('helvetica', 10))
+button.pack(pady = 5)
+
+button4 = tk.Button(list, text = 'Show Lowest Score', command = view_low, font =('helvetica', 10))
+button4.pack(pady = 5)
+
+quit = tk.Button(list, text = 'Exit', command = list.destroy, font = ('helvetica', 10))
+quit.pack(pady =5)
+
 Records = ['1345, John Curry, 8, 15, 7, 45',
            '2345, Sam Sturtivant, 14, 15, 14, 77',
            '9876, Lee Scott, 17, 11, 16, 99',
