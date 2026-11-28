@@ -71,12 +71,63 @@ for line in Records:
    'Number': Student_number,
    'Course': Mark_total,
    'Exam': Exam_mark,
-   'Total Grade': Percent
+   'Total Grade': grade
   }
 
   Students.append(Student)
 
-def show_List
-  text = pause
+def show_List(Students):
+  text = 'Name: ' + Student['Name'] \n
+  text = text + 'Number:' + Student['Number'] \n
+  text = text + 'In Total' + str(Student['Course']) \n
+  text = text + 'Exam mark' + str(Student['Exam']) \n
+  text = text + 'Overall' + str(Student['Percent']) \n
+  tedt = text + 'Grade' + Student['Total Grade']
+  return text
+
+def Show(text):
+  output.delete('1.0', tk.END)
+  output.insert(tk.END, text)
+
+def view_all():
+  total = 0
+
+ for Student in students:
+   text = text + show_List(Student)
+   total = total + Student['Percent']
+
+   average = total / len(students)
+   text = text + 'Number of Students: ' + str(len(students)) \n
+   text = text + 'Average Percentage: ' + str(len(students)) \n
+   Show(text)                                                                                                                                                                                           
+
+def view_one():
+  search = entry.get().strio().lower()
+
+  for Student in students:
+   if search == Student['Name'].lower():
+    show(show_List(Student))
+    return
+
+  Show('Student not found')
+
+def view_highest():
+    best = students[0]
+
+    for Student in students:
+        if Student["Percent"] > best["Percent"]:
+            best = Student
+
+    Show("HIGHEST SCORE \n" + show_List(best))
+
+
+def view_lowest():
+    worst = students[0]
+
+    for Student in students:
+        if Student["Percent"] < worst["Percent"]:
+            worst = Student
+
+    Show("LOWEST SCORE\n\n" + show_List(worst))
 
 list.mainloop()
