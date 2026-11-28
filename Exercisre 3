@@ -1,30 +1,6 @@
 import tkinter as tk
 
-list = tk.Tk()
-list.title('Records')
-list.geometry('450x370')
-
-button1 = tk.Button(list, text = 'View all student records', command = view_all, font = ('helvetica', 10))
-button1.pack(pady =5)
-
-Elabel = tk.Label(list, text = 'Enter a student's name:', font = ('helvetica', 5, 'bold'))
-Elabel.pack()
-
-Eentry = tk.Entry(list, width = 12)
-Eentry.pack()
-
-button2  = tk.Button(list, text = 'View student's individually', command = view_one, font = ('helevetica', 10))
-button2.pack(pady = 5)
-
-button3 = tk.Button(list, text = 'Show Highest Score', command = view_high, font = ('helvetica', 10))
-button.pack(pady = 5)
-
-button4 = tk.Button(list, text = 'Show Lowest Score', command = view_low, font =('helvetica', 10))
-button4.pack(pady = 5)
-
-quit = tk.Button(list, text = 'Exit', command = list.destroy, font = ('helvetica', 10))
-quit.pack(pady =5)
-
+# All student records yada yada
 Records = ['1345, John Curry, 8, 15, 7, 45',
            '2345, Sam Sturtivant, 14, 15, 14, 77',
            '9876, Lee Scott, 17, 11, 16, 99',
@@ -38,96 +14,133 @@ Records = ['1345, John Curry, 8, 15, 7, 45',
 
 Students = []
 
+# This part is for calling each value individually in the list above
 for line in Records:
-  line = line.strip(',')
-  parts = line.split(',')
+    parts = [part.strip() for part in line.split(',')]
 
-  Student_number = parts[0]
-  Student_name = parts[1]
+    Student_number = parts[0]
+    Student_name = parts[1]
 
-  Mark1 = parts[2]
-  Mark2 = [3]
-  Mark3 = [4]
-  Exam_mark = [5]
+    Mark1 = int(parts[2])
+    Mark2 = int(parts[3])
+    Mark3 = int(parts[4])
+    Exam_mark = int(parts[5])
 
-  Mark_total = Mark1 + Mark2 + Mark3
-  Total_mark = Mark_total + Exam_mark
-  Percent = Total_mark / 100
-  
+    Mark_total = Mark1 + Mark2 + Mark3
+    Total_mark = Mark_total + Exam_mark
+    Percent = Total_mark / 160 * 100   # I ask AI what is the percantage in total regarding with grades
 
-  if Percent >= 70:
-   print = 'A'
-  elif Percent >= 60:
-   print = 'B'
-  elif Percent >= 50:
-   print = 'C'
-  elfi Percent >= 40:
-   print = 'D'
-  else:
-   print = 'F'
+# If else statement for the grades the students get
+    if Percent >= 70:
+        grade = 'A'
+    elif Percent >= 60:
+        grade = 'B'
+    elif Percent >= 50:
+        grade = 'C'
+    elif Percent >= 40:
+        grade = 'D'
+    else:
+        grade = 'F'
+# This is used to display the student's record in orderly 
+    Student = {
+        'Name': Student_name,
+        'Number': Student_number,
+        'Course': Mark_total,
+        'Exam': Exam_mark,
+        'Percent': Percent,
+        'Total Grade': grade
+    }
 
-  Student {
-   'Name': Student_name,
-   'Number': Student_number,
-   'Course': Mark_total,
-   'Exam': Exam_mark,
-   'Total Grade': grade
-  }
+    Students.append(Student)
 
-  Students.append(Student)
+# This is used to literrally display the record once you clicked view all students
+def show_List(Student):
+    text = 'Name: ' + Student['Name'] + '\n'
+    text = text + 'Number: ' + Student['Number'] + '\n'
+    text = text + 'In Total: ' + str(Student['Course']) + '\n'
+    text = text + 'Exam mark: ' + str(Student['Exam']) + '\n'
+    text = text + 'Overall: ' + str(round(Student['Percent'], 1)) + '%\n'
+    text = text + 'Grade: ' + Student['Total Grade'] + '\n'
+    return text
 
-def show_List(Students):
-  text = 'Name: ' + Student['Name'] \n
-  text = text + 'Number:' + Student['Number'] \n
-  text = text + 'In Total' + str(Student['Course']) \n
-  text = text + 'Exam mark' + str(Student['Exam']) \n
-  text = text + 'Overall' + str(Student['Percent']) \n
-  tedt = text + 'Grade' + Student['Total Grade']
-  return text
-
+# This def is to show the output of the records 
 def Show(text):
-  output.delete('1.0', tk.END)
-  output.insert(tk.END, text)
+    output.delete('1.0', tk.END)
+    output.insert(tk.END, text)
 
+# Here is to view all, hence the value of the funtcion
 def view_all():
-  total = 0
+    text = ''
+    total = 0
 
- for Student in students:
-   text = text + show_List(Student)
-   total = total + Student['Percent']
+    for Student in Students:
+        text = text + show_List(Student)
+        total = total + Student['Percent']
 
-   average = total / len(students)
-   text = text + 'Number of Students: ' + str(len(students)) \n
-   text = text + 'Average Percentage: ' + str(len(students)) \n
-   Show(text)                                                                                                                                                                                           
+    average = total / len(Students)
+    text = text + 'Number of Students: ' + str(len(Students)) + '\n'
+    text = text + 'Average Percentage: ' + str(round(average, 1)) + '%\n'
+    Show(text)
 
+# Here is just to view one person when searching for their name
 def view_one():
-  search = entry.get().strio().lower()
+    search = Eentry.get().strip().lower()
 
-  for Student in students:
-   if search == Student['Name'].lower():
-    show(show_List(Student))
-    return
+    for Student in Students:
+        if search == Student['Name'].lower():
+            Show(show_List(Student))
+            return
 
-  Show('Student not found')
+    Show('Student not found / Please type their name')  # An Exception Handling if the name is incorrectt, wrong input, or hasn't type at all
 
-def view_highest():
-    best = students[0]
+# Here is to view the highest score out of all of them
+def view_high():
+    best = Students[0]
 
-    for Student in students:
-        if Student["Percent"] > best["Percent"]:
+    for Student in Students:
+        if Student['Percent'] > best['Percent']:
             best = Student
 
-    Show("HIGHEST SCORE \n" + show_List(best))
+    Show('HIGHEST SCORE\n\n' + show_List(best))
 
+# Here is to view the lowest score out of all of them
+def view_low():
+    worst = Students[0]
 
-def view_lowest():
-    worst = students[0]
-
-    for Student in students:
-        if Student["Percent"] < worst["Percent"]:
+    for Student in Students:
+        if Student['Percent'] < worst['Percent']:
             worst = Student
 
-    Show("LOWEST SCORE\n\n" + show_List(worst))
+    Show('LOWEST SCORE\n\n' + show_List(worst))
+
+# And the window for the app
+list = tk.Tk()
+list.title('Records')
+list.geometry('450x570')
+list.config(bg = 'beige')
+
+button1 = tk.Button(list, text='View all student records', command=view_all, font=('helvetica', 10))
+button1.pack(pady = 25)
+
+Elabel = tk.Label(list, text="Enter a student's full name:", font=('helvetica', 15, 'bold'), bg = 'beige')
+Elabel.pack()
+
+Eentry = tk.Entry(list, width=25)
+Eentry.pack(pady = 10)
+
+button2 = tk.Button(list, text='View student', command=view_one, font=('helvetica', 10))
+button2.pack(pady = 5)
+
+button3 = tk.Button(list, text='Show Highest Score', command=view_high, font=('helvetica', 10))
+button3.pack(pady = 5)
+
+button4 = tk.Button(list, text='Show Lowest Score', command=view_low, font=('helvetica', 10))
+button4.pack(pady = 5)
+
+quit = tk.Button(list, text='Exit', command=list.destroy, font=('helvetica', 10), width = 10)
+quit.pack(pady = 5)
+
+output = tk.Text(list, height = 15, width = 50)
+output.pack(pady = 5)
 
 list.mainloop()
